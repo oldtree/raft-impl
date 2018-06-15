@@ -1,0 +1,28 @@
+syntax = "proto3";
+import "google/protobuf/timestamp.proto";
+
+message Timepoint {
+    google.protobuf.Timestamp timestamp = 1;
+}
+
+message Endpoints {
+    repeated string endpoint=1;
+    google.protobuf.Timestamp timestamp = 2;
+}
+
+message Master {
+    string master=1;
+    google.protobuf.Timestamp timestamp = 2;
+}
+
+message Terms {
+    int64 terms=1;
+    int64 commitId=2;
+    google.protobuf.Timestamp timestamp = 3;
+}
+
+service ExternApi{
+    rpc GetEndpoints(Timepoint) returns (Endpoints);
+    rpc GetMaster(Timepoint) returns (Master);
+    rpc GetCurrentTerms(Timepoint) returns (Terms);
+}

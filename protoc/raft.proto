@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+message Log{
+
+}
+
+message Entry{
+
+}
+
+message Heartbeat{
+
+}
+
+message HeartbeatResponse{
+
+}
+
+service LeaderElection{
+
+}
+
+service LogReplication{
+
+}
+
+service HeartBeats{
+    rpc heartbeat(Heartbeat) returns (HeartbeatResponse);
+}
