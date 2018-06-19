@@ -5,25 +5,25 @@ import (
 )
 
 type Config struct {
-	Address  string
-	Peerlist []*Peer
-	Name     string
-	ID       uint64
+	Address  string  `json:"address,omitempty"`
+	Peerlist []*Peer `json:"peerlist,omitempty"`
+	Name     string  `json:"name,omitempty"`
+	ID       uint64  `json:"id,omitempty"`
 
 	//vote timeout unit microseconds
-	VoteTimeout int64
+	VoteTimeout int64 `json:"vote_timeout,omitempty"`
 	//heartbeat timeout unit microseconds
-	HeartbeatTimeout int64
+	HeartbeatTimeout int64 `json:"heartbeat_timeout,omitempty"`
 
 	//log dir
-	LogDirPath   string
-	SnapshotPath string
-	SnapGap      uint64
+	LogDirPath   string `json:"log_dir_path,omitempty"`
+	SnapshotPath string `json:"snapshot_path,omitempty"`
+	SnapGap      uint64 `json:"snap_gap,omitempty"`
 
 	//sysinfo
-	GoVersion string
-	BuildTime string
-	RunDir    string
+	GoVersion string `json:"go_version,omitempty"`
+	BuildTime string `json:"build_time,omitempty"`
+	RunDir    string `json:"run_dir,omitempty"`
 }
 
 func (c *Config) Sysinfo() []byte {

@@ -6,11 +6,18 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+type HttpServer struct {
+	Address string
+}
+
+type RpcServer struct {
+	Address string
+}
+
 type CtlCommandType uint
 
 const (
 	JoinMember CtlCommandType = iota
-	SwitchRole
 	ReleaseSnapshot
 	TransSnapshot
 )
@@ -27,7 +34,28 @@ type Raft struct {
 	ElectionTimeOut  int64
 	HeartBeatTimeout int64
 
+	CmdChan chan *CtlCommand
+
 	StopChan chan struct{}
+
+	HttpApiServer *HttpServer
+	RpcApiServer  *RpcServer
+
+	Peers        map[string]*Peer
+	GlobalConfig *Config
+}
+
+func NewRaft(cfg *Config) *Raft {
+	return &Raft{
+		ElectionTimeOut:  3,
+		HeartBeatTimeout: 3,
+		StopChan:         make(chan struct{}, 1),
+		CmdChan:          make(chan *CtlCommand, 1),
+		GlobalConfig:     cfg,
+		HttpApiServer:    new(HttpServer),
+		RpcApiServer:     new(RpcServer),
+		Peers:            make(map[string]*Peer),
+	}
 }
 
 func (rf *Raft) Init() error {

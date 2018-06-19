@@ -39,3 +39,12 @@ var (
 	ERROR_ElectionTimeout  = errors.New("raft leader election failed")
 	ERROR_HeartbeatTimeout = errors.New("raft heart beat failed")
 )
+
+type Term struct {
+	StartTime      int64 `json:"start_time,omitempty"`
+	Endtime        int64 `json:"endtime,omitempty"`
+	Term           int64 `json:"term,omitempty"`
+	Able           bool  `json:"able,omitempty"`
+	EndPointNumber int   `json:"end_point_number,omitempty"`
+	VoteNumber     int64 `json:"vote_number,omitempty"`
+}
