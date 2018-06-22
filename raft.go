@@ -148,6 +148,12 @@ func (rf *Raft) LogReplication() error {
 		4:An entry is committed once a majority of followers acknowledge it...
 		5:and a response is sent to the client.
 	*/
+	for key, follwerNode := range rf.Peers {
+		log.Infof("log replication to node [%s] ", key)
+		if follwerNode != nil && rf.Isself(follwerNode) {
+			continue
+		}
+	}
 
 	log.Infof("raft log replication end")
 	return nil
