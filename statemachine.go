@@ -1,11 +1,13 @@
 package raft
 
 import log "github.com/sirupsen/logrus"
+import "encoding/json"
 
 type StateMachine struct {
-	State      RaftState
-	LastTerm   int64
-	LastCommit int64
+	State      RaftState        `json:"state,omitempty"`
+	LastTerm   int64            `json:"last_term,omitempty"`
+	LastCommit int64            `json:"last_commit,omitempty"`
+	Peers      map[string]*Peer `json:"peers,omitempty"`
 }
 
 //If followers don't hear from a leader then they can become a candidate.
@@ -17,4 +19,21 @@ func (statemachine *StateMachine) TransStatus(targetState RaftState, condition i
 		return statemachine.State, nil
 	}
 	return statemachine.State, nil
+}
+
+func (statemachine *StateMachine) SaveState() ([]byte, error) {
+	stateData, err := json.Marshal(statemachine)
+	if err != nil {
+		log.Warnf("save state machine failed : [%s] ", err.Error())
+		return nil, err
+	}
+	return stateData, nil
+}
+
+func (stateMachine *StateMachine) RecoverState(stateData []byte) error {
+	err := json.Unmarshal(stateData)
+	if err != nil {
+		return err
+	}
+	return nil
 }

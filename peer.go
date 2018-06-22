@@ -8,14 +8,14 @@ import (
 )
 
 type Peer struct {
-	Addr           string
-	ID             int64
-	Name           string
-	Role           RaftState
-	Term           int64
-	LastCommit     int64
-	StopChan       chan struct{}
-	LastActiveTime time.Time
+	Addr           string        `json:"addr,omitempty"`
+	ID             int64         `json:"id,omitempty"`
+	Name           string        `json:"name,omitempty"`
+	Role           RaftState     `json:"role,omitempty"`
+	Term           int64         `json:"term,omitempty"`
+	LastCommit     int64         `json:"last_commit,omitempty"`
+	StopChan       chan struct{} `json:"stop_chan,omitempty"`
+	LastActiveTime time.Time     `json:"last_active_time,omitempty"`
 }
 
 // vote request

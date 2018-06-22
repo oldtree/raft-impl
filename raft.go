@@ -58,6 +58,13 @@ type Raft struct {
 
 	Peers        map[string]*Peer
 	GlobalConfig *Config
+
+	VoteFor string
+	IsVoted bool
+}
+
+func (rf *Raft) QuorumValue() int {
+	return len(rf.Peers)/2 + 1
 }
 
 func (rf *Raft) Isself(p *Peer) bool {

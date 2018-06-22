@@ -1,6 +1,6 @@
 package raft
 
-type Entry struct {
+type LogEntry struct {
 	logentry []byte
 	Term     int64
 }
