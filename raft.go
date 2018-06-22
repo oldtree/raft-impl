@@ -1,7 +1,9 @@
 package raft
 
 import (
+	"context"
 	"sync"
+	"time"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -17,19 +19,30 @@ type RpcServer struct {
 type CtlCommandType uint
 
 const (
-	JoinMember CtlCommandType = iota
+	StartRaft CtlCommandType = iota
+	JoinMember
 	ReleaseSnapshot
 	TransSnapshot
 )
 
 type CtlCommand struct {
 	CMD    CtlCommandType
-	Pramas interface{}
+	Params interface{}
+}
+
+func NewCtlCmd(cmd CtlCommandType, params interface{}) *CtlCommand {
+	return &CtlCommand{
+		CMD:    cmd,
+		Params: params,
+	}
 }
 
 type Raft struct {
-	Mutex sync.RWMutex
-	Node  *Node
+	Mutex        sync.RWMutex
+	Node         *Peer
+	StateMachine *StateMachine
+
+	initOnce sync.Once
 
 	ElectionTimeOut  int64
 	HeartBeatTimeout int64
@@ -38,11 +51,17 @@ type Raft struct {
 
 	StopChan chan struct{}
 
+	VoteResponse chan int
+
 	HttpApiServer *HttpServer
 	RpcApiServer  *RpcServer
 
 	Peers        map[string]*Peer
 	GlobalConfig *Config
+}
+
+func (rf *Raft) Isself(p *Peer) bool {
+	return rf.Node.Name == p.Name
 }
 
 func NewRaft(cfg *Config) *Raft {
@@ -59,6 +78,11 @@ func NewRaft(cfg *Config) *Raft {
 }
 
 func (rf *Raft) Init() error {
+	rf.initOnce.Do(func() {
+		log.Infof("start init raft node")
+	})
+	rf.StateMachine.State = NODE_STATE_CANDIDATE
+	rf.CmdChan <- NewCtlCmd(StartRaft, nil)
 	return nil
 }
 
@@ -75,6 +99,13 @@ func (rf *Raft) LeaderElection() error {
 	// If the receiving node hasn't voted yet in this term then it votes for the candidate,and the node resets its election timeout
 	// Once a candidate has a majority of votes it becomes leader.The leader begins sending out Append Entries messages to its followers.
 	// This election term will continue until a follower stops receiving heartbeats and becomes a candidate.
+	ctx, cancelfunc := context.WithDeadline(context.Background(), time.Now().Add(time.Millisecond*time.Duration(rf.ElectionTimeOut)))
+	defer cancelfunc()
+	for endPointName, endpoint := range rf.Peers {
+		log.Infof("send vote request to : ", endPointName)
+		go endpoint.SendVoteRequest(ctx)
+	}
+
 	log.Info("end leader election")
 	return nil
 }
@@ -82,6 +113,12 @@ func (rf *Raft) LeaderElection() error {
 func (rf *Raft) HeartBeat() error {
 	//These messages are sent in intervals specified by the heartbeat timeout.
 	//Followers then respond to each Append Entries message.
+	tick := time.NewTicker(time.Second * 60)
+	for {
+		select {
+		case <-tick.C:
+		}
+	}
 	return nil
 }
 
@@ -94,6 +131,10 @@ func (rf *Raft) HeartBeat() error {
 //The leader then notifies the followers that the entry is committed.
 //The cluster has now come to consensus about the system state.
 //This process is called Log Replication.
+
+type Log struct {
+}
+
 func (rf *Raft) LogReplication() error {
 
 	log.Infof("raft log replication start")
@@ -112,21 +153,60 @@ func (rf *Raft) LogReplication() error {
 	return nil
 }
 
-func (rf *Raft) AsFollower() error {
-	return nil
-}
-
-func (rf *Raft) AsLeader() error {
-	return nil
-}
-
-func (rf *Raft) AsCandidater() error {
-	return nil
-}
-
-func (rf *Raft) loop() error {
+func (rf *Raft) runAsFollower() error {
 	for {
-		select {}
+		select {
+		//case election
+		//case applylog
+		//case heartbeat
+		}
+	}
+	return nil
+}
+
+func (rf *Raft) runAsLeader() error {
+	for {
+		select {
+		//case election
+		//case applylog
+		//case heartbeat
+		}
+	}
+	return nil
+}
+
+func (rf *Raft) runAsCandidater() error {
+	for {
+		select {
+		//case election
+		//case applylog
+		//case heartbeat
+		}
+	}
+	return nil
+}
+
+func (rf *Raft) runloop() error {
+	for {
+		select {
+		case <-rf.StopChan:
+			log.Infof("raft server stop ......")
+		case ctlcmd := <-rf.CmdChan:
+			log.Infof("raft control cmd : ", ctlcmd)
+		}
+		switch rf.StateMachine.State {
+		case NODE_STATE_CANDIDATE:
+			log.Infof("node state is [%s] ", NODE_STATE_CANDIDATE.String())
+			rf.runAsCandidater()
+		case NODE_STATE_FOLLOWER:
+			log.Infof("node state is [%s] ", NODE_STATE_FOLLOWER.String())
+			rf.runAsFollower()
+		case NODE_STATE_LEADER:
+			log.Infof("node state is [%s] ", NODE_STATE_LEADER.String())
+			rf.runAsLeader()
+		case NODE_STATE_STOP:
+			log.Warnf("node state is [%s] ", NODE_STATE_STOP.String())
+		}
 	}
 	return nil
 }
