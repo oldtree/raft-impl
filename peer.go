@@ -14,13 +14,18 @@ type Peer struct {
 	Role           RaftState     `json:"role,omitempty"`
 	Term           int64         `json:"term,omitempty"`
 	LastCommit     int64         `json:"last_commit,omitempty"`
-	StopChan       chan struct{} `json:"stop_chan,omitempty"`
+	StopChan       chan struct{} `json:"-"`
 	LastActiveTime time.Time     `json:"last_active_time,omitempty"`
 }
 
 // vote request
 //The candidate then requests votes from other peer.
 func (peer *Peer) SendVoteRequest(ctx context.Context) error {
-	log.Infof("send need vote request to : %s", peer.Addr)
+	log.Infof("send vote request to : %s", peer.Addr)
+	return nil
+}
+
+func (peer *Peer) SendVoteResponse(ctx context.Context, address string) error {
+	log.Infof("send vote response to : [%s] ", address)
 	return nil
 }
