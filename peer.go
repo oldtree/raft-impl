@@ -2,7 +2,6 @@ package raft
 
 import (
 	"context"
-	"time"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -15,7 +14,7 @@ type Peer struct {
 	Term           int64         `json:"term,omitempty"`
 	LastCommit     int64         `json:"last_commit,omitempty"`
 	StopChan       chan struct{} `json:"-"`
-	LastActiveTime time.Time     `json:"last_active_time,omitempty"`
+	LastActiveTime int64         `json:"last_active_time,omitempty"`
 }
 
 // vote request
@@ -27,5 +26,9 @@ func (peer *Peer) SendVoteRequest(ctx context.Context) error {
 
 func (peer *Peer) SendVoteResponse(ctx context.Context, address string) error {
 	log.Infof("send vote response to : [%s] ", address)
+	return nil
+}
+
+func (peer *Peer) SendheartBeat() error {
 	return nil
 }

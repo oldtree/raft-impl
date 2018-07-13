@@ -2,13 +2,16 @@ package raft
 
 import (
 	"encoding/json"
+	"io/ioutil"
+	"os"
 )
 
 type Config struct {
-	Address  string  `json:"address,omitempty"`
-	Peerlist []*Peer `json:"peerlist,omitempty"`
-	Name     string  `json:"name,omitempty"`
-	ID       uint64  `json:"id,omitempty"`
+	Address       string  `json:"address,omitempty"`
+	ClientAddress string  `json:"peer,omitempty"`
+	Peerlist      []*Peer `json:"peerlist,omitempty"`
+	Name          string  `json:"name,omitempty"`
+	ID            uint64  `json:"id,omitempty"`
 
 	//vote timeout unit microseconds
 	VoteTimeout int64 `json:"vote_timeout,omitempty"`
@@ -21,9 +24,29 @@ type Config struct {
 	SnapGap      uint64 `json:"snap_gap,omitempty"`
 
 	//sysinfo
-	GoVersion string `json:"go_version,omitempty"`
-	BuildTime string `json:"build_time,omitempty"`
-	RunDir    string `json:"run_dir,omitempty"`
+	RunDir string `json:"run_dir,omitempty"`
+}
+
+func NewConfigFromByte(data []byte) (*Config, error) {
+	c := new(Config)
+	err := json.Unmarshal(data, c)
+	if err != nil {
+		return nil, err
+	}
+	return c, nil
+}
+
+func NewConfigFromFile(filepath string) (*Config, error) {
+	data, err := ioutil.ReadFile(filepath)
+	if err != nil {
+		return nil, err
+	}
+	c := new(Config)
+	err = json.Unmarshal(data, c)
+	if err != nil {
+		return nil, err
+	}
+	return c, nil
 }
 
 func (c *Config) Sysinfo() []byte {
@@ -32,4 +55,16 @@ func (c *Config) Sysinfo() []byte {
 		return nil
 	}
 	return data
+}
+
+func (c *Config) GetCurrentPath() (error, string) {
+	if c.RunDir != "" {
+		return nil, c.RunDir
+	}
+	dirPath, err := os.Getwd()
+	if err != nil {
+		return err, ""
+	}
+	c.RunDir = dirPath
+	return nil, dirPath
 }

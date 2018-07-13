@@ -14,6 +14,21 @@ type StateMachine struct {
 	Peers      map[string]*Peer `json:"peers,omitempty"`
 }
 
+func NewStateMachine() *StateMachine {
+	return &StateMachine{
+		State:      NODE_STATE_FOLLOWER,
+		LastTerm:   0,
+		LastCommit: 0,
+		Peers:      make(map[string]*Peer),
+	}
+}
+
+func (statemachine *StateMachine) UpdatePeers(newpeers map[string]*Peer) error {
+	log.Infof("update statemchine peers record info")
+	statemachine.Peers = newpeers
+	return nil
+}
+
 //If followers don't hear from a leader then they can become a candidate.
 
 //The candidate becomes the leader if it gets votes from a majority of nodes.

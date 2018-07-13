@@ -11,6 +11,7 @@ const (
 	NODE_STATE_LEADER
 	NODE_STATE_CANDIDATE
 	NODE_STATE_STOP
+	NODE_STATE_SNAPSHOT
 )
 
 const (
@@ -19,6 +20,7 @@ const (
 	STATE_CANDIDATE_DESCRIBE = "candidate"
 	STATE_STOP_DESCRIBE      = "stop"
 	STATE_UNKNOWN_DESCRIBE   = "unknown"
+	STATE_SNAPSHOT_DESCRIBE  = "snapshot"
 )
 
 func (r RaftState) String() string {
@@ -31,6 +33,8 @@ func (r RaftState) String() string {
 		return STATE_CANDIDATE_DESCRIBE
 	case NODE_STATE_STOP:
 		return STATE_STOP_DESCRIBE
+	case NODE_STATE_SNAPSHOT:
+		return STATE_SNAPSHOT_DESCRIBE
 	}
 	return STATE_UNKNOWN_DESCRIBE
 }
@@ -48,3 +52,13 @@ type Term struct {
 	EndPointNumber int   `json:"end_point_number,omitempty"`
 	VoteNumber     int64 `json:"vote_number,omitempty"`
 }
+
+type OPERATION_TYPE int
+
+const (
+	OPERATION_HEARTBEAT OPERATION_TYPE = iota
+	OPERATION_ELECTION
+	OPERATION_APPENDLOG
+	OPERATION_SNAPSHOT
+	OPERATION_VOTEREQUEST
+)

@@ -1,6 +1,22 @@
 package raft
 
+import (
+	"errors"
+	"os"
+
+	log "github.com/sirupsen/logrus"
+)
+
+var (
+	ErrNotDir = errors.New("path is a file ,not dir")
+)
+
+const (
+	Permission uint32 = 766
+)
+
 type Persistent interface {
+	Init() error
 	CreateDir(path string) error
 	RemoveDir(path string) error
 	CreateFile(filename string) error
@@ -12,9 +28,38 @@ type Persistent interface {
 }
 
 type FilePersistent struct {
+	StoreDir string
+}
+
+func (fi *FilePersistent) Init() error {
+	finfo, err := os.Stat(fi.StoreDir)
+	if err != nil {
+		if err == os.ErrNotExist {
+			log.Infof("file [%s] not exist,could create it")
+		} else {
+			log.Errorf("stat file [%s] error : [%s] ", fi.StoreDir, err.Error())
+			return err
+		}
+	}
+	if finfo.IsDir() == false {
+		log.Errorf("file [%s] is not dir", fi.StoreDir)
+		return ErrNotDir
+	}
+	err = os.MkdirAll(fi.StoreDir, os.FileMode(Permission))
+	if err != nil {
+		log.Errorf("create dir [%s] failed")
+		return err
+	}
+	log.Infof("create dir [%s] success ", fi.StoreDir)
+	return nil
 }
 
 func (fi *FilePersistent) CreateDir(path string) error {
+	err := os.MkdirAll(fi.StoreDir, os.FileMode(Permission))
+	if err != nil {
+		log.Errorf("create dir [%s] failed ", err.Error())
+		return err
+	}
 	return nil
 }
 
@@ -39,6 +84,10 @@ func (fi *FilePersistent) Read([]byte) (int, error) {
 }
 
 type BoltDbPersisten struct {
+}
+
+func Init() error {
+	return nil
 }
 
 func (bol *BoltDbPersisten) CreateDir(path string) error {
