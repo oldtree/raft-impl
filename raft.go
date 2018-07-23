@@ -45,8 +45,9 @@ func NewCtlCmd(cmd CtlCommandType, params interface{}) *CtlCommand {
 }
 
 type Raft struct {
-	Mutex        sync.RWMutex
-	Node         *Peer
+	Mutex sync.RWMutex
+	Node  *Peer
+
 	StateMachine *StateMachine
 
 	initOnce sync.Once
@@ -57,24 +58,17 @@ type Raft struct {
 	VoteFor string
 	IsVoted bool
 
-	Heartbeat chan struct{}
-	LogEntry  chan struct{}
-	StopChan  chan struct{}
-
-	CmdChan chan *CtlCommand
+	HeartbeatFailed chan struct{}
+	LogEntry        chan *LogEntry
+	VoteChan        chan *Vote
+	StopChan        chan struct{}
+	CmdChan         chan *CtlCommand
 
 	HttpApiServer *HttpServer
 	RpcApiServer  *RpcServer
 
-	Peers        map[string]*Peer
+	Peers        *PeerList
 	GlobalConfig *Config
-}
-
-func (rf *Raft) QuorumValue() int {
-	if len(rf.Peers) == 1 {
-		return 1
-	}
-	return len(rf.Peers)/2 + 1
 }
 
 func (rf *Raft) Isself(p *Peer) bool {
@@ -91,7 +85,8 @@ func NewRaft(cfg *Config) *Raft {
 		GlobalConfig:     cfg,
 		HttpApiServer:    new(HttpServer),
 		RpcApiServer:     new(RpcServer),
-		Peers:            make(map[string]*Peer),
+		Peers:            NewPeerList(),
+		Node:             NewPeer(cfg.Address, cfg.ID, cfg.Name, NODE_STATE_CANDIDATE, 0, 0, time.Now().Unix()),
 	}
 }
 
@@ -120,11 +115,9 @@ func (rf *Raft) LeaderElection() error {
 	// This election term will continue until a follower stops receiving heartbeats and becomes a candidate.
 	ctx, cancelfunc := context.WithDeadline(context.Background(), time.Now().Add(time.Millisecond*time.Duration(rf.ElectionTimeOut)))
 	defer cancelfunc()
-	for endPointName, endpoint := range rf.Peers {
-		log.Infof("send vote request to : ", endPointName)
-		go endpoint.SendVoteRequest(ctx)
-	}
-
+	rf.VoteFor = rf.Node.Name
+	rf.IsVoted = true
+	rf.Peers.SendVoteRequest(ctx)
 	log.Info("end leader election")
 	return nil
 }
@@ -140,11 +133,11 @@ func (rf *Raft) HeartBeat() error {
 		select {
 		case <-tick.C:
 			gap = int64rand.Int63n(MaxHeartbeatTimeout)
-			rf.Heartbeat <- struct{}{}
 			if gap < MinHeartbeatTimeout {
 				gap = MinHeartbeatTimeout
 			}
 			tick.Reset(time.Duration(gap))
+			continue
 		case <-rf.StopChan:
 			log.Infof("raft heart beat timer[%s] is exit ", time.Now().String())
 			return nil
@@ -163,29 +156,16 @@ func (rf *Raft) HeartBeat() error {
 //The cluster has now come to consensus about the system state.
 //This process is called Log Replication.
 
-func (rf *Raft) LogReplication() error {
-
-	log.Infof("raft log replication start")
-	//Once we have a leader elected we need to replicate all changes to our system to all nodes.
-	//This is done by using the same Append Entries message that was used for heartbeats.
-	//step :
-	/*
-		1:First a client sends a change to the leader.
-		2:The change is appended to the leader's log...
-		3:then the change is sent to the followers on the next heartbeat.
-		4:An entry is committed once a majority of followers acknowledge it...
-		5:and a response is sent to the client.
-	*/
-	for key, follwerNode := range rf.Peers {
-		log.Infof("log replication to node [%s] ", key)
-		if follwerNode != nil && rf.Isself(follwerNode) {
-			continue
-		}
-	}
-
-	log.Infof("raft log replication end")
-	return nil
-}
+//Once we have a leader elected we need to replicate all changes to our system to all nodes.
+//This is done by using the same Append Entries message that was used for heartbeats.
+//step :
+/*
+	1:First a client sends a change to the leader.
+	2:The change is appended to the leader's log...
+	3:then the change is sent to the followers on the next heartbeat.
+	4:An entry is committed once a majority of followers acknowledge it...
+	5:and a response is sent to the client.
+*/
 
 func (rf *Raft) ApplyLog() error {
 	log.Infof("apply raft log")
@@ -193,6 +173,7 @@ func (rf *Raft) ApplyLog() error {
 }
 
 func (rf *Raft) runAsFollower() error {
+	log.Infof("node [%s] run as follower", rf.Node.Name)
 
 	for {
 		select {
@@ -200,7 +181,11 @@ func (rf *Raft) runAsFollower() error {
 			log.Infof("raft server is close")
 			rf.StateMachine.State = NODE_STATE_STOP
 			break
-		case <-rf.Heartbeat:
+		case <-rf.LogEntry:
+			log.Warnf("node [%s] is not leader", rf.Node.Name)
+			//TODO：return error code && leader address
+		case <-rf.HeartbeatFailed:
+			rf.LeaderElection()
 		}
 	}
 	return nil
@@ -213,19 +198,20 @@ func (rf *Raft) runAsLeader() error {
 			log.Infof("raft server is close")
 			rf.StateMachine.State = NODE_STATE_STOP
 			break
+
 		}
 	}
 	return nil
 }
 
 func (rf *Raft) runAsCandidater() error {
+	log.Infof("node [%s] run as Candidater", rf.Node.Name)
 	for {
 		select {
 		case <-rf.StopChan:
 			log.Infof("raft server is close")
 			rf.StateMachine.State = NODE_STATE_STOP
 			break
-		case <-rf.Heartbeat:
 		}
 	}
 	return nil

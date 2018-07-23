@@ -2,9 +2,35 @@ package raft
 
 import (
 	"encoding/json"
+	"errors"
+	"fmt"
 	"io/ioutil"
 	"os"
+	"time"
 )
+
+var (
+	ErrCheckConfigFailed              = errors.New("config check failed")
+	ErrCheckConfigAddressFailed       = errors.New("config address check failed")
+	ErrCheckConfigClientAddressFailed = errors.New("config cleint address check failed")
+	ErrCheckConfigPeerlistFailed      = errors.New("config peer list failed")
+)
+
+const (
+	META               = "-meta.json"
+	SNAPSHOT           = "-snapshot.log"
+	PathFormat         = "/d%/%d-%d.log" //day-term-commit
+	MetaPathFormat     = "/d%/%d-%d-meta.json"
+	SnapshotPathFormat = "/d%/%d-%d-snapshot.log"
+)
+
+func GetFormatPath(term, commit int) (metaPath, snapPath, logPath string) {
+	day := time.Now().Day()
+	metaPath = fmt.Sprintf(MetaPathFormat, day, term, commit)
+	snapPath = fmt.Sprintf(SnapshotPathFormat, day, term, commit)
+	logPath = fmt.Sprintf(PathFormat, day, term, commit)
+	return
+}
 
 type Config struct {
 	Address       string  `json:"address,omitempty"`
@@ -21,10 +47,47 @@ type Config struct {
 	//log dir
 	LogDirPath   string `json:"log_dir_path,omitempty"`
 	SnapshotPath string `json:"snapshot_path,omitempty"`
-	SnapGap      uint64 `json:"snap_gap,omitempty"`
 
 	//sysinfo
 	RunDir string `json:"run_dir,omitempty"`
+}
+
+func (cfg *Config) VailedCheck() (ok bool, err error) {
+	if len(cfg.Address) == 0 {
+		ok = false
+		err = ErrCheckConfigAddressFailed
+		return
+	}
+	if len(cfg.ClientAddress) == 0 {
+		ok = false
+		err = ErrCheckConfigClientAddressFailed
+		return
+	}
+
+	if len(cfg.Peerlist) < 3 {
+		ok = false
+		err = ErrCheckConfigPeerlistFailed
+		return
+	}
+
+	if cfg.VoteTimeout < 0 {
+		ok = false
+		err = ErrCheckConfigFailed
+		return
+	}
+
+	if cfg.HeartbeatTimeout < 0 {
+		ok = false
+		err = ErrCheckConfigFailed
+		return
+	}
+
+	if cfg.LogDirPath == "" {
+		cfg.LogDirPath, _ = os.Getwd()
+	}
+
+	ok, err = true, nil
+	return
 }
 
 func NewConfigFromByte(data []byte) (*Config, error) {

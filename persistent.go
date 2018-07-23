@@ -64,14 +64,39 @@ func (fi *FilePersistent) CreateDir(path string) error {
 }
 
 func (fi *FilePersistent) RemoveDir(path string) error {
+	err := os.RemoveAll(path)
+	if err != nil {
+		log.Errorf("remove file [%s] failed", path)
+		return err
+	}
 	return nil
 }
 
 func (fi *FilePersistent) CreateFile(filename string) error {
+	finfo, _ := os.Stat(filename)
+	if finfo != nil {
+		return errors.New("file is exist")
+	}
+	newFi, err := os.Create(filename)
+	if err != nil {
+		log.Errorf("create file [%s] failed", filename)
+		return err
+	}
+	defer newFi.Close()
 	return nil
 }
 
 func (fi *FilePersistent) RemoveFile(filename string) error {
+	finfo, _ := os.Stat(filename)
+	if finfo == nil {
+		log.Infof("remove not exist file")
+		return nil
+	}
+	err := os.Remove(filename)
+	if err != nil {
+		log.Errorf("remove file [%s] failed", filename)
+		return err
+	}
 	return nil
 }
 

@@ -62,3 +62,11 @@ const (
 	OPERATION_SNAPSHOT
 	OPERATION_VOTEREQUEST
 )
+
+type Vote struct {
+	CommitedID int64  `json:"commited_id,omitempty"`
+	TermID     int64  `json:"term_id,omitempty"`
+	NodeID     int64  `json:"node_id,omitempty"`
+	Peername   string `json:"peername,omitempty"`
+	TimeStamp  int64  `json:"time_stamp,omitempty"`
+}
