@@ -427,9 +427,8 @@ var _ grpc.ClientConn
 // is compatible with the grpc package it is being compiled against.
 const _ = grpc.SupportPackageIsVersion4
 
-// LogApplayClient is the client API for LogApplay service.
-//
-// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+// Client API for LogApplay service
+
 type LogApplayClient interface {
 	ApplyLog(ctx context.Context, in *ApplyLogRequest, opts ...grpc.CallOption) (*ApplyLogResponse, error)
 }
@@ -444,14 +443,15 @@ func NewLogApplayClient(cc *grpc.ClientConn) LogApplayClient {
 
 func (c *logApplayClient) ApplyLog(ctx context.Context, in *ApplyLogRequest, opts ...grpc.CallOption) (*ApplyLogResponse, error) {
 	out := new(ApplyLogResponse)
-	err := c.cc.Invoke(ctx, "/protobuffer.LogApplay/ApplyLog", in, out, opts...)
+	err := grpc.Invoke(ctx, "/protobuffer.LogApplay/ApplyLog", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// LogApplayServer is the server API for LogApplay service.
+// Server API for LogApplay service
+
 type LogApplayServer interface {
 	ApplyLog(context.Context, *ApplyLogRequest) (*ApplyLogResponse, error)
 }
@@ -491,9 +491,8 @@ var _LogApplay_serviceDesc = grpc.ServiceDesc{
 	Metadata: "raft.proto",
 }
 
-// SnapshotsClient is the client API for Snapshots service.
-//
-// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+// Client API for Snapshots service
+
 type SnapshotsClient interface {
 	RequestSnapshot(ctx context.Context, in *SnapshotRequest, opts ...grpc.CallOption) (*SnapshotResponse, error)
 }
@@ -508,14 +507,15 @@ func NewSnapshotsClient(cc *grpc.ClientConn) SnapshotsClient {
 
 func (c *snapshotsClient) RequestSnapshot(ctx context.Context, in *SnapshotRequest, opts ...grpc.CallOption) (*SnapshotResponse, error) {
 	out := new(SnapshotResponse)
-	err := c.cc.Invoke(ctx, "/protobuffer.Snapshots/RequestSnapshot", in, out, opts...)
+	err := grpc.Invoke(ctx, "/protobuffer.Snapshots/RequestSnapshot", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// SnapshotsServer is the server API for Snapshots service.
+// Server API for Snapshots service
+
 type SnapshotsServer interface {
 	RequestSnapshot(context.Context, *SnapshotRequest) (*SnapshotResponse, error)
 }
@@ -555,9 +555,8 @@ var _Snapshots_serviceDesc = grpc.ServiceDesc{
 	Metadata: "raft.proto",
 }
 
-// LeaderElectionClient is the client API for LeaderElection service.
-//
-// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+// Client API for LeaderElection service
+
 type LeaderElectionClient interface {
 	RequestVote(ctx context.Context, in *VoteRequest, opts ...grpc.CallOption) (*VoteResponse, error)
 }
@@ -572,14 +571,15 @@ func NewLeaderElectionClient(cc *grpc.ClientConn) LeaderElectionClient {
 
 func (c *leaderElectionClient) RequestVote(ctx context.Context, in *VoteRequest, opts ...grpc.CallOption) (*VoteResponse, error) {
 	out := new(VoteResponse)
-	err := c.cc.Invoke(ctx, "/protobuffer.LeaderElection/RequestVote", in, out, opts...)
+	err := grpc.Invoke(ctx, "/protobuffer.LeaderElection/RequestVote", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// LeaderElectionServer is the server API for LeaderElection service.
+// Server API for LeaderElection service
+
 type LeaderElectionServer interface {
 	RequestVote(context.Context, *VoteRequest) (*VoteResponse, error)
 }
@@ -619,9 +619,8 @@ var _LeaderElection_serviceDesc = grpc.ServiceDesc{
 	Metadata: "raft.proto",
 }
 
-// HeartBeatsClient is the client API for HeartBeats service.
-//
-// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+// Client API for HeartBeats service
+
 type HeartBeatsClient interface {
 	Heartbeat(ctx context.Context, in *HeartbeatRequest, opts ...grpc.CallOption) (*HeartbeatResponse, error)
 }
@@ -636,14 +635,15 @@ func NewHeartBeatsClient(cc *grpc.ClientConn) HeartBeatsClient {
 
 func (c *heartBeatsClient) Heartbeat(ctx context.Context, in *HeartbeatRequest, opts ...grpc.CallOption) (*HeartbeatResponse, error) {
 	out := new(HeartbeatResponse)
-	err := c.cc.Invoke(ctx, "/protobuffer.HeartBeats/heartbeat", in, out, opts...)
+	err := grpc.Invoke(ctx, "/protobuffer.HeartBeats/heartbeat", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// HeartBeatsServer is the server API for HeartBeats service.
+// Server API for HeartBeats service
+
 type HeartBeatsServer interface {
 	Heartbeat(context.Context, *HeartbeatRequest) (*HeartbeatResponse, error)
 }

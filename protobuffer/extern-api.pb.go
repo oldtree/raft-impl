@@ -341,9 +341,8 @@ var _ grpc.ClientConn
 // is compatible with the grpc package it is being compiled against.
 const _ = grpc.SupportPackageIsVersion4
 
-// ExternApiClient is the client API for ExternApi service.
-//
-// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+// Client API for ExternApi service
+
 type ExternApiClient interface {
 	GetEndpoints(ctx context.Context, in *Timepoint, opts ...grpc.CallOption) (*Endpoints, error)
 	GetMaster(ctx context.Context, in *Timepoint, opts ...grpc.CallOption) (*Master, error)
@@ -361,7 +360,7 @@ func NewExternApiClient(cc *grpc.ClientConn) ExternApiClient {
 
 func (c *externApiClient) GetEndpoints(ctx context.Context, in *Timepoint, opts ...grpc.CallOption) (*Endpoints, error) {
 	out := new(Endpoints)
-	err := c.cc.Invoke(ctx, "/protobuffer.ExternApi/GetEndpoints", in, out, opts...)
+	err := grpc.Invoke(ctx, "/protobuffer.ExternApi/GetEndpoints", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -370,7 +369,7 @@ func (c *externApiClient) GetEndpoints(ctx context.Context, in *Timepoint, opts 
 
 func (c *externApiClient) GetMaster(ctx context.Context, in *Timepoint, opts ...grpc.CallOption) (*Master, error) {
 	out := new(Master)
-	err := c.cc.Invoke(ctx, "/protobuffer.ExternApi/GetMaster", in, out, opts...)
+	err := grpc.Invoke(ctx, "/protobuffer.ExternApi/GetMaster", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -379,7 +378,7 @@ func (c *externApiClient) GetMaster(ctx context.Context, in *Timepoint, opts ...
 
 func (c *externApiClient) GetCurrentTerms(ctx context.Context, in *Timepoint, opts ...grpc.CallOption) (*Terms, error) {
 	out := new(Terms)
-	err := c.cc.Invoke(ctx, "/protobuffer.ExternApi/GetCurrentTerms", in, out, opts...)
+	err := grpc.Invoke(ctx, "/protobuffer.ExternApi/GetCurrentTerms", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -388,14 +387,15 @@ func (c *externApiClient) GetCurrentTerms(ctx context.Context, in *Timepoint, op
 
 func (c *externApiClient) GetClusterSnapshot(ctx context.Context, in *Timepoint, opts ...grpc.CallOption) (*ClusterSnapshot, error) {
 	out := new(ClusterSnapshot)
-	err := c.cc.Invoke(ctx, "/protobuffer.ExternApi/GetClusterSnapshot", in, out, opts...)
+	err := grpc.Invoke(ctx, "/protobuffer.ExternApi/GetClusterSnapshot", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// ExternApiServer is the server API for ExternApi service.
+// Server API for ExternApi service
+
 type ExternApiServer interface {
 	GetEndpoints(context.Context, *Timepoint) (*Endpoints, error)
 	GetMaster(context.Context, *Timepoint) (*Master, error)

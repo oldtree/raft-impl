@@ -55,8 +55,9 @@ type Raft struct {
 	ElectionTimeOut  int64
 	HeartBeatTimeout int64
 
-	VoteFor string
-	IsVoted bool
+	VoteFor            string
+	IsVoted            bool
+	ReceiveVoteCounter int
 
 	HeartbeatFailed chan struct{}
 	LogEntry        chan *LogEntry
@@ -150,7 +151,7 @@ func (rf *Raft) HeartBeat() error {
 //Each change is added as an entry in the node's log.
 //This log entry is currently uncommitted so it won't update the node's value.
 //To commit the entry the node first replicates it to the follower nodes...
-//then the leader waits u	ntil a majority of nodes have written the entry.
+//then the leader waits until a majority of nodes have written the entry.
 //The entry is now committed on the leader node and the node state is update.
 //The leader then notifies the followers that the entry is committed.
 //The cluster has now come to consensus about the system state.
@@ -167,51 +168,86 @@ func (rf *Raft) HeartBeat() error {
 	5:and a response is sent to the client.
 */
 
-func (rf *Raft) ApplyLog() error {
-	log.Infof("apply raft log")
+func (rf *Raft) ApplyLog(raftlog *LogEntry) error {
+	log.Infof("apply raft log term [%d] commit [%d]", raftlog.Terms, raftlog.Commited)
 	return nil
 }
 
-func (rf *Raft) runAsFollower() error {
+func (rf *Raft) CommitLog(raftlog *LogEntry) error {
+	log.Infof("commit log term [%d] commit [%d]", raftlog.Terms, raftlog.Commited)
+	return nil
+}
+
+func (rf *Raft) runAsFollower() {
 	log.Infof("node [%s] run as follower", rf.Node.Name)
-
+	log.Infof("current statu : term [%d] commit [%d]", rf.Node.Term, rf.Node.LastCommit)
 	for {
 		select {
 		case <-rf.StopChan:
 			log.Infof("raft server is close")
 			rf.StateMachine.State = NODE_STATE_STOP
 			break
-		case <-rf.LogEntry:
-			log.Warnf("node [%s] is not leader", rf.Node.Name)
-			//TODO：return error code && leader address
+		case raftlog := <-rf.LogEntry:
+			if raftlog.Terms > rf.Node.Term && raftlog.Commited > rf.Node.LastCommit {
+				rf.CommitLog(raftlog)
+				continue
+			} else {
+				//TODO : check failed ,break point
+				rf.StateMachine.State = NODE_STATE_CANDIDATE
+				log.Infof("node [%s] change state to [%d]", rf.Node.Name, rf.StateMachine.State)
+				return
+			}
 		case <-rf.HeartbeatFailed:
-			rf.LeaderElection()
+			//1:heartbeat timeout
+			//2:heartbeat raftlog postion not right
+			rf.StateMachine.State = NODE_STATE_CANDIDATE
+			log.Infof("node [%s] change state to [%d]", rf.Node.Name, rf.StateMachine.State)
+			return
 		}
 	}
-	return nil
+	return
 }
 
-func (rf *Raft) runAsLeader() error {
+func (rf *Raft) runAsLeader() {
 	for {
 		select {
 		case <-rf.StopChan:
 			log.Infof("raft server is close")
 			rf.StateMachine.State = NODE_STATE_STOP
 			break
-
+		case raftlog := <-rf.LogEntry:
+			rf.CommitLog(raftlog)
+			continue
+		case <-rf.HeartbeatFailed:
+			//TODO: heartbeat reply term great than local
+			rf.StateMachine.State = NODE_STATE_CANDIDATE
+			return
 		}
 	}
-	return nil
+	return
 }
 
 func (rf *Raft) runAsCandidater() error {
 	log.Infof("node [%s] run as Candidater", rf.Node.Name)
+	rf.IsVoted = true
+	rf.VoteFor = rf.Node.Name
+	rf.ReceiveVoteCounter = rf.ReceiveVoteCounter + 1
+	go rf.LeaderElection()
 	for {
 		select {
 		case <-rf.StopChan:
 			log.Infof("raft server is close")
 			rf.StateMachine.State = NODE_STATE_STOP
 			break
+		case <-rf.HeartbeatFailed:
+			log.Infof("heartbeat reject")
+			//TODO :if heartbeat contain term and commit greater than local,than switch to follower
+		case raftlog := <-rf.LogEntry:
+			if raftlog.Terms > rf.Node.Term && raftlog.Commited > rf.Node.LastCommit {
+				rf.StateMachine.State = NODE_STATE_FOLLOWER
+			} else {
+				log.Infof("Candidater can not handle raft log")
+			}
 		}
 	}
 	return nil
