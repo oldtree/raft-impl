@@ -70,3 +70,7 @@ type Vote struct {
 	Peername   string `json:"peername,omitempty"`
 	TimeStamp  int64  `json:"time_stamp,omitempty"`
 }
+
+type LogEntry struct {
+	
+}

@@ -39,10 +39,12 @@ type Config struct {
 	Name          string  `json:"name,omitempty"`
 	ID            uint64  `json:"id,omitempty"`
 
-	//vote timeout unit microseconds
+	// vote timeout unit microseconds
 	VoteTimeout int64 `json:"vote_timeout,omitempty"`
-	//heartbeat timeout unit microseconds
+	// heartbeat timeout unit microseconds
 	HeartbeatTimeout int64 `json:"heartbeat_timeout,omitempty"`
+	// term circle
+	TermCircle int64 `json:"term_circle,omitempty"`
 
 	//log dir
 	LogDirPath   string `json:"log_dir_path,omitempty"`

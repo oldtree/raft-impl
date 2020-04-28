@@ -25,10 +25,10 @@ var _ = math.Inf
 const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 
 type ApplyLogRequest struct {
-	CurrentCommitID      int64                `protobuf:"varint,1,opt,name=currentCommitID" json:"currentCommitID,omitempty"`
-	CurrentTermID        int64                `protobuf:"varint,2,opt,name=currentTermID" json:"currentTermID,omitempty"`
+	CurrentCommitID      int64                `protobuf:"varint,1,opt,name=currentCommitID,proto3" json:"currentCommitID,omitempty"`
+	CurrentTermID        int64                `protobuf:"varint,2,opt,name=currentTermID,proto3" json:"currentTermID,omitempty"`
 	LogData              []byte               `protobuf:"bytes,3,opt,name=logData,proto3" json:"logData,omitempty"`
-	Timestamp            *timestamp.Timestamp `protobuf:"bytes,4,opt,name=timestamp" json:"timestamp,omitempty"`
+	Timestamp            *timestamp.Timestamp `protobuf:"bytes,4,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
 	XXX_unrecognized     []byte               `json:"-"`
 	XXX_sizecache        int32                `json:"-"`
@@ -38,7 +38,7 @@ func (m *ApplyLogRequest) Reset()         { *m = ApplyLogRequest{} }
 func (m *ApplyLogRequest) String() string { return proto.CompactTextString(m) }
 func (*ApplyLogRequest) ProtoMessage()    {}
 func (*ApplyLogRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_raft_8a90809919e43bd1, []int{0}
+	return fileDescriptor_raft_e8ee26b5cadb4aca, []int{0}
 }
 func (m *ApplyLogRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ApplyLogRequest.Unmarshal(m, b)
@@ -87,9 +87,9 @@ func (m *ApplyLogRequest) GetTimestamp() *timestamp.Timestamp {
 }
 
 type ApplyLogResponse struct {
-	CurrentCommitID      int64                `protobuf:"varint,1,opt,name=currentCommitID" json:"currentCommitID,omitempty"`
-	CurrentTermID        int64                `protobuf:"varint,2,opt,name=currentTermID" json:"currentTermID,omitempty"`
-	Timestamp            *timestamp.Timestamp `protobuf:"bytes,3,opt,name=timestamp" json:"timestamp,omitempty"`
+	CurrentCommitID      int64                `protobuf:"varint,1,opt,name=currentCommitID,proto3" json:"currentCommitID,omitempty"`
+	CurrentTermID        int64                `protobuf:"varint,2,opt,name=currentTermID,proto3" json:"currentTermID,omitempty"`
+	Timestamp            *timestamp.Timestamp `protobuf:"bytes,3,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
 	XXX_unrecognized     []byte               `json:"-"`
 	XXX_sizecache        int32                `json:"-"`
@@ -99,7 +99,7 @@ func (m *ApplyLogResponse) Reset()         { *m = ApplyLogResponse{} }
 func (m *ApplyLogResponse) String() string { return proto.CompactTextString(m) }
 func (*ApplyLogResponse) ProtoMessage()    {}
 func (*ApplyLogResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_raft_8a90809919e43bd1, []int{1}
+	return fileDescriptor_raft_e8ee26b5cadb4aca, []int{1}
 }
 func (m *ApplyLogResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ApplyLogResponse.Unmarshal(m, b)
@@ -141,9 +141,9 @@ func (m *ApplyLogResponse) GetTimestamp() *timestamp.Timestamp {
 }
 
 type HeartbeatRequest struct {
-	TermIndex            int64                `protobuf:"varint,1,opt,name=termIndex" json:"termIndex,omitempty"`
-	LastTermIndex        int64                `protobuf:"varint,2,opt,name=lastTermIndex" json:"lastTermIndex,omitempty"`
-	Timestamp            *timestamp.Timestamp `protobuf:"bytes,3,opt,name=timestamp" json:"timestamp,omitempty"`
+	TermIndex            int64                `protobuf:"varint,1,opt,name=termIndex,proto3" json:"termIndex,omitempty"`
+	LastTermIndex        int64                `protobuf:"varint,2,opt,name=lastTermIndex,proto3" json:"lastTermIndex,omitempty"`
+	Timestamp            *timestamp.Timestamp `protobuf:"bytes,3,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
 	XXX_unrecognized     []byte               `json:"-"`
 	XXX_sizecache        int32                `json:"-"`
@@ -153,7 +153,7 @@ func (m *HeartbeatRequest) Reset()         { *m = HeartbeatRequest{} }
 func (m *HeartbeatRequest) String() string { return proto.CompactTextString(m) }
 func (*HeartbeatRequest) ProtoMessage()    {}
 func (*HeartbeatRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_raft_8a90809919e43bd1, []int{2}
+	return fileDescriptor_raft_e8ee26b5cadb4aca, []int{2}
 }
 func (m *HeartbeatRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_HeartbeatRequest.Unmarshal(m, b)
@@ -195,9 +195,9 @@ func (m *HeartbeatRequest) GetTimestamp() *timestamp.Timestamp {
 }
 
 type HeartbeatResponse struct {
-	TermIndex            int64                `protobuf:"varint,1,opt,name=termIndex" json:"termIndex,omitempty"`
-	LastTermIndex        int64                `protobuf:"varint,2,opt,name=lastTermIndex" json:"lastTermIndex,omitempty"`
-	Timestamp            *timestamp.Timestamp `protobuf:"bytes,3,opt,name=timestamp" json:"timestamp,omitempty"`
+	TermIndex            int64                `protobuf:"varint,1,opt,name=termIndex,proto3" json:"termIndex,omitempty"`
+	LastTermIndex        int64                `protobuf:"varint,2,opt,name=lastTermIndex,proto3" json:"lastTermIndex,omitempty"`
+	Timestamp            *timestamp.Timestamp `protobuf:"bytes,3,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
 	XXX_unrecognized     []byte               `json:"-"`
 	XXX_sizecache        int32                `json:"-"`
@@ -207,7 +207,7 @@ func (m *HeartbeatResponse) Reset()         { *m = HeartbeatResponse{} }
 func (m *HeartbeatResponse) String() string { return proto.CompactTextString(m) }
 func (*HeartbeatResponse) ProtoMessage()    {}
 func (*HeartbeatResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_raft_8a90809919e43bd1, []int{3}
+	return fileDescriptor_raft_e8ee26b5cadb4aca, []int{3}
 }
 func (m *HeartbeatResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_HeartbeatResponse.Unmarshal(m, b)
@@ -249,9 +249,9 @@ func (m *HeartbeatResponse) GetTimestamp() *timestamp.Timestamp {
 }
 
 type VoteRequest struct {
-	RequestNodeID        int64    `protobuf:"varint,1,opt,name=RequestNodeID" json:"RequestNodeID,omitempty"`
-	LastCommitID         int64    `protobuf:"varint,2,opt,name=LastCommitID" json:"LastCommitID,omitempty"`
-	LastTerm             int64    `protobuf:"varint,3,opt,name=LastTerm" json:"LastTerm,omitempty"`
+	RequestNodeID        int64    `protobuf:"varint,1,opt,name=RequestNodeID,proto3" json:"RequestNodeID,omitempty"`
+	LastCommitID         int64    `protobuf:"varint,2,opt,name=LastCommitID,proto3" json:"LastCommitID,omitempty"`
+	LastTerm             int64    `protobuf:"varint,3,opt,name=LastTerm,proto3" json:"LastTerm,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -261,7 +261,7 @@ func (m *VoteRequest) Reset()         { *m = VoteRequest{} }
 func (m *VoteRequest) String() string { return proto.CompactTextString(m) }
 func (*VoteRequest) ProtoMessage()    {}
 func (*VoteRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_raft_8a90809919e43bd1, []int{4}
+	return fileDescriptor_raft_e8ee26b5cadb4aca, []int{4}
 }
 func (m *VoteRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_VoteRequest.Unmarshal(m, b)
@@ -303,8 +303,8 @@ func (m *VoteRequest) GetLastTerm() int64 {
 }
 
 type VoteResponse struct {
-	ResponseNodeID       int64    `protobuf:"varint,1,opt,name=ResponseNodeID" json:"ResponseNodeID,omitempty"`
-	VoteState            int64    `protobuf:"varint,2,opt,name=VoteState" json:"VoteState,omitempty"`
+	ResponseNodeID       int64    `protobuf:"varint,1,opt,name=ResponseNodeID,proto3" json:"ResponseNodeID,omitempty"`
+	VoteState            int64    `protobuf:"varint,2,opt,name=VoteState,proto3" json:"VoteState,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -314,7 +314,7 @@ func (m *VoteResponse) Reset()         { *m = VoteResponse{} }
 func (m *VoteResponse) String() string { return proto.CompactTextString(m) }
 func (*VoteResponse) ProtoMessage()    {}
 func (*VoteResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_raft_8a90809919e43bd1, []int{5}
+	return fileDescriptor_raft_e8ee26b5cadb4aca, []int{5}
 }
 func (m *VoteResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_VoteResponse.Unmarshal(m, b)
@@ -358,7 +358,7 @@ func (m *SnapshotRequest) Reset()         { *m = SnapshotRequest{} }
 func (m *SnapshotRequest) String() string { return proto.CompactTextString(m) }
 func (*SnapshotRequest) ProtoMessage()    {}
 func (*SnapshotRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_raft_8a90809919e43bd1, []int{6}
+	return fileDescriptor_raft_e8ee26b5cadb4aca, []int{6}
 }
 func (m *SnapshotRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SnapshotRequest.Unmarshal(m, b)
@@ -388,7 +388,7 @@ func (m *SnapshotResponse) Reset()         { *m = SnapshotResponse{} }
 func (m *SnapshotResponse) String() string { return proto.CompactTextString(m) }
 func (*SnapshotResponse) ProtoMessage()    {}
 func (*SnapshotResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_raft_8a90809919e43bd1, []int{7}
+	return fileDescriptor_raft_e8ee26b5cadb4aca, []int{7}
 }
 func (m *SnapshotResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SnapshotResponse.Unmarshal(m, b)
@@ -427,293 +427,199 @@ var _ grpc.ClientConn
 // is compatible with the grpc package it is being compiled against.
 const _ = grpc.SupportPackageIsVersion4
 
-// Client API for LogApplay service
-
-type LogApplayClient interface {
+// LogServiceClient is the client API for LogService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+type LogServiceClient interface {
 	ApplyLog(ctx context.Context, in *ApplyLogRequest, opts ...grpc.CallOption) (*ApplyLogResponse, error)
+	RequestSnapshot(ctx context.Context, in *SnapshotRequest, opts ...grpc.CallOption) (*SnapshotResponse, error)
+	RequestVote(ctx context.Context, in *VoteRequest, opts ...grpc.CallOption) (*VoteResponse, error)
+	Heartbeat(ctx context.Context, in *HeartbeatRequest, opts ...grpc.CallOption) (*HeartbeatResponse, error)
 }
 
-type logApplayClient struct {
+type logServiceClient struct {
 	cc *grpc.ClientConn
 }
 
-func NewLogApplayClient(cc *grpc.ClientConn) LogApplayClient {
-	return &logApplayClient{cc}
+func NewLogServiceClient(cc *grpc.ClientConn) LogServiceClient {
+	return &logServiceClient{cc}
 }
 
-func (c *logApplayClient) ApplyLog(ctx context.Context, in *ApplyLogRequest, opts ...grpc.CallOption) (*ApplyLogResponse, error) {
+func (c *logServiceClient) ApplyLog(ctx context.Context, in *ApplyLogRequest, opts ...grpc.CallOption) (*ApplyLogResponse, error) {
 	out := new(ApplyLogResponse)
-	err := grpc.Invoke(ctx, "/protobuffer.LogApplay/ApplyLog", in, out, c.cc, opts...)
+	err := c.cc.Invoke(ctx, "/protobuffer.LogService/ApplyLog", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// Server API for LogApplay service
+func (c *logServiceClient) RequestSnapshot(ctx context.Context, in *SnapshotRequest, opts ...grpc.CallOption) (*SnapshotResponse, error) {
+	out := new(SnapshotResponse)
+	err := c.cc.Invoke(ctx, "/protobuffer.LogService/RequestSnapshot", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
 
-type LogApplayServer interface {
+func (c *logServiceClient) RequestVote(ctx context.Context, in *VoteRequest, opts ...grpc.CallOption) (*VoteResponse, error) {
+	out := new(VoteResponse)
+	err := c.cc.Invoke(ctx, "/protobuffer.LogService/RequestVote", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *logServiceClient) Heartbeat(ctx context.Context, in *HeartbeatRequest, opts ...grpc.CallOption) (*HeartbeatResponse, error) {
+	out := new(HeartbeatResponse)
+	err := c.cc.Invoke(ctx, "/protobuffer.LogService/heartbeat", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// LogServiceServer is the server API for LogService service.
+type LogServiceServer interface {
 	ApplyLog(context.Context, *ApplyLogRequest) (*ApplyLogResponse, error)
+	RequestSnapshot(context.Context, *SnapshotRequest) (*SnapshotResponse, error)
+	RequestVote(context.Context, *VoteRequest) (*VoteResponse, error)
+	Heartbeat(context.Context, *HeartbeatRequest) (*HeartbeatResponse, error)
 }
 
-func RegisterLogApplayServer(s *grpc.Server, srv LogApplayServer) {
-	s.RegisterService(&_LogApplay_serviceDesc, srv)
+func RegisterLogServiceServer(s *grpc.Server, srv LogServiceServer) {
+	s.RegisterService(&_LogService_serviceDesc, srv)
 }
 
-func _LogApplay_ApplyLog_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _LogService_ApplyLog_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ApplyLogRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(LogApplayServer).ApplyLog(ctx, in)
+		return srv.(LogServiceServer).ApplyLog(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/protobuffer.LogApplay/ApplyLog",
+		FullMethod: "/protobuffer.LogService/ApplyLog",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LogApplayServer).ApplyLog(ctx, req.(*ApplyLogRequest))
+		return srv.(LogServiceServer).ApplyLog(ctx, req.(*ApplyLogRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-var _LogApplay_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "protobuffer.LogApplay",
-	HandlerType: (*LogApplayServer)(nil),
-	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "ApplyLog",
-			Handler:    _LogApplay_ApplyLog_Handler,
-		},
-	},
-	Streams:  []grpc.StreamDesc{},
-	Metadata: "raft.proto",
-}
-
-// Client API for Snapshots service
-
-type SnapshotsClient interface {
-	RequestSnapshot(ctx context.Context, in *SnapshotRequest, opts ...grpc.CallOption) (*SnapshotResponse, error)
-}
-
-type snapshotsClient struct {
-	cc *grpc.ClientConn
-}
-
-func NewSnapshotsClient(cc *grpc.ClientConn) SnapshotsClient {
-	return &snapshotsClient{cc}
-}
-
-func (c *snapshotsClient) RequestSnapshot(ctx context.Context, in *SnapshotRequest, opts ...grpc.CallOption) (*SnapshotResponse, error) {
-	out := new(SnapshotResponse)
-	err := grpc.Invoke(ctx, "/protobuffer.Snapshots/RequestSnapshot", in, out, c.cc, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// Server API for Snapshots service
-
-type SnapshotsServer interface {
-	RequestSnapshot(context.Context, *SnapshotRequest) (*SnapshotResponse, error)
-}
-
-func RegisterSnapshotsServer(s *grpc.Server, srv SnapshotsServer) {
-	s.RegisterService(&_Snapshots_serviceDesc, srv)
-}
-
-func _Snapshots_RequestSnapshot_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _LogService_RequestSnapshot_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SnapshotRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SnapshotsServer).RequestSnapshot(ctx, in)
+		return srv.(LogServiceServer).RequestSnapshot(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/protobuffer.Snapshots/RequestSnapshot",
+		FullMethod: "/protobuffer.LogService/RequestSnapshot",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SnapshotsServer).RequestSnapshot(ctx, req.(*SnapshotRequest))
+		return srv.(LogServiceServer).RequestSnapshot(ctx, req.(*SnapshotRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-var _Snapshots_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "protobuffer.Snapshots",
-	HandlerType: (*SnapshotsServer)(nil),
-	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "RequestSnapshot",
-			Handler:    _Snapshots_RequestSnapshot_Handler,
-		},
-	},
-	Streams:  []grpc.StreamDesc{},
-	Metadata: "raft.proto",
-}
-
-// Client API for LeaderElection service
-
-type LeaderElectionClient interface {
-	RequestVote(ctx context.Context, in *VoteRequest, opts ...grpc.CallOption) (*VoteResponse, error)
-}
-
-type leaderElectionClient struct {
-	cc *grpc.ClientConn
-}
-
-func NewLeaderElectionClient(cc *grpc.ClientConn) LeaderElectionClient {
-	return &leaderElectionClient{cc}
-}
-
-func (c *leaderElectionClient) RequestVote(ctx context.Context, in *VoteRequest, opts ...grpc.CallOption) (*VoteResponse, error) {
-	out := new(VoteResponse)
-	err := grpc.Invoke(ctx, "/protobuffer.LeaderElection/RequestVote", in, out, c.cc, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// Server API for LeaderElection service
-
-type LeaderElectionServer interface {
-	RequestVote(context.Context, *VoteRequest) (*VoteResponse, error)
-}
-
-func RegisterLeaderElectionServer(s *grpc.Server, srv LeaderElectionServer) {
-	s.RegisterService(&_LeaderElection_serviceDesc, srv)
-}
-
-func _LeaderElection_RequestVote_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _LogService_RequestVote_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(VoteRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(LeaderElectionServer).RequestVote(ctx, in)
+		return srv.(LogServiceServer).RequestVote(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/protobuffer.LeaderElection/RequestVote",
+		FullMethod: "/protobuffer.LogService/RequestVote",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LeaderElectionServer).RequestVote(ctx, req.(*VoteRequest))
+		return srv.(LogServiceServer).RequestVote(ctx, req.(*VoteRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-var _LeaderElection_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "protobuffer.LeaderElection",
-	HandlerType: (*LeaderElectionServer)(nil),
-	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "RequestVote",
-			Handler:    _LeaderElection_RequestVote_Handler,
-		},
-	},
-	Streams:  []grpc.StreamDesc{},
-	Metadata: "raft.proto",
-}
-
-// Client API for HeartBeats service
-
-type HeartBeatsClient interface {
-	Heartbeat(ctx context.Context, in *HeartbeatRequest, opts ...grpc.CallOption) (*HeartbeatResponse, error)
-}
-
-type heartBeatsClient struct {
-	cc *grpc.ClientConn
-}
-
-func NewHeartBeatsClient(cc *grpc.ClientConn) HeartBeatsClient {
-	return &heartBeatsClient{cc}
-}
-
-func (c *heartBeatsClient) Heartbeat(ctx context.Context, in *HeartbeatRequest, opts ...grpc.CallOption) (*HeartbeatResponse, error) {
-	out := new(HeartbeatResponse)
-	err := grpc.Invoke(ctx, "/protobuffer.HeartBeats/heartbeat", in, out, c.cc, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// Server API for HeartBeats service
-
-type HeartBeatsServer interface {
-	Heartbeat(context.Context, *HeartbeatRequest) (*HeartbeatResponse, error)
-}
-
-func RegisterHeartBeatsServer(s *grpc.Server, srv HeartBeatsServer) {
-	s.RegisterService(&_HeartBeats_serviceDesc, srv)
-}
-
-func _HeartBeats_Heartbeat_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _LogService_Heartbeat_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(HeartbeatRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(HeartBeatsServer).Heartbeat(ctx, in)
+		return srv.(LogServiceServer).Heartbeat(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/protobuffer.HeartBeats/Heartbeat",
+		FullMethod: "/protobuffer.LogService/Heartbeat",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(HeartBeatsServer).Heartbeat(ctx, req.(*HeartbeatRequest))
+		return srv.(LogServiceServer).Heartbeat(ctx, req.(*HeartbeatRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-var _HeartBeats_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "protobuffer.HeartBeats",
-	HandlerType: (*HeartBeatsServer)(nil),
+var _LogService_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "protobuffer.LogService",
+	HandlerType: (*LogServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
+			MethodName: "ApplyLog",
+			Handler:    _LogService_ApplyLog_Handler,
+		},
+		{
+			MethodName: "RequestSnapshot",
+			Handler:    _LogService_RequestSnapshot_Handler,
+		},
+		{
+			MethodName: "RequestVote",
+			Handler:    _LogService_RequestVote_Handler,
+		},
+		{
 			MethodName: "heartbeat",
-			Handler:    _HeartBeats_Heartbeat_Handler,
+			Handler:    _LogService_Heartbeat_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "raft.proto",
 }
 
-func init() { proto.RegisterFile("raft.proto", fileDescriptor_raft_8a90809919e43bd1) }
+func init() { proto.RegisterFile("raft.proto", fileDescriptor_raft_e8ee26b5cadb4aca) }
 
-var fileDescriptor_raft_8a90809919e43bd1 = []byte{
-	// 460 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xc4, 0x93, 0xcd, 0x6e, 0xd3, 0x40,
-	0x10, 0xc7, 0xb5, 0x04, 0x41, 0x3d, 0x49, 0x9b, 0x74, 0x4f, 0xc6, 0x2a, 0x10, 0x59, 0x15, 0xca,
-	0xc9, 0x95, 0xca, 0x85, 0x2b, 0x25, 0x08, 0x8a, 0xac, 0x1e, 0x5c, 0x0b, 0x21, 0x71, 0xda, 0x34,
-	0x13, 0x37, 0x92, 0xed, 0x35, 0xbb, 0x13, 0x89, 0xbe, 0x05, 0xdc, 0x79, 0x0d, 0xde, 0x0f, 0xd9,
-	0xde, 0x8d, 0xb3, 0x56, 0x73, 0x40, 0x20, 0xf5, 0xe4, 0xdd, 0xff, 0x7c, 0xfd, 0x3c, 0x33, 0x0b,
-	0xa0, 0xc4, 0x8a, 0xa2, 0x4a, 0x49, 0x92, 0x7c, 0xd8, 0x7c, 0x16, 0x9b, 0xd5, 0x0a, 0x55, 0xf0,
-	0x32, 0x93, 0x32, 0xcb, 0xf1, 0xcc, 0x6a, 0x67, 0xb4, 0x2e, 0x50, 0x93, 0x28, 0xaa, 0xd6, 0x3b,
-	0xfc, 0xcd, 0x60, 0xfc, 0xb6, 0xaa, 0xf2, 0xbb, 0x58, 0x66, 0x09, 0x7e, 0xdb, 0xa0, 0x26, 0x3e,
-	0x83, 0xf1, 0xcd, 0x46, 0x29, 0x2c, 0xe9, 0x9d, 0x2c, 0x8a, 0x35, 0x5d, 0xce, 0x7d, 0x36, 0x65,
-	0xb3, 0x41, 0xd2, 0x97, 0xf9, 0x29, 0x1c, 0x1a, 0x29, 0x45, 0x55, 0x5c, 0xce, 0xfd, 0x47, 0x8d,
-	0x9f, 0x2b, 0x72, 0x1f, 0x9e, 0xe6, 0x32, 0x9b, 0x0b, 0x12, 0xfe, 0x60, 0xca, 0x66, 0xa3, 0xc4,
-	0x5e, 0xf9, 0x1b, 0xf0, 0xb6, 0x40, 0xfe, 0xe3, 0x29, 0x9b, 0x0d, 0xcf, 0x83, 0xa8, 0x45, 0x8e,
-	0x2c, 0x72, 0x94, 0x5a, 0x8f, 0xa4, 0x73, 0x0e, 0x7f, 0x31, 0x98, 0x74, 0xdc, 0xba, 0x92, 0xa5,
-	0xc6, 0xff, 0x0e, 0xee, 0xe0, 0x0d, 0xfe, 0x06, 0xef, 0x07, 0x83, 0xc9, 0x47, 0x14, 0x8a, 0x16,
-	0x28, 0xc8, 0xf6, 0xf5, 0x04, 0x3c, 0xaa, 0x13, 0x97, 0x4b, 0xfc, 0x6e, 0xc0, 0x3a, 0xa1, 0x46,
-	0xca, 0x85, 0x6e, 0x4b, 0x37, 0x1e, 0x06, 0xc9, 0x11, 0xff, 0x01, 0xe9, 0x27, 0x83, 0xe3, 0x1d,
-	0x24, 0xd3, 0xb2, 0x87, 0x65, 0xd2, 0x30, 0xfc, 0x2c, 0x09, 0x6d, 0x83, 0x4e, 0xe1, 0xd0, 0x1c,
-	0xaf, 0xe4, 0x12, 0xb7, 0xd3, 0x73, 0x45, 0x1e, 0xc2, 0x28, 0x16, 0xba, 0x1b, 0x71, 0xcb, 0xe4,
-	0x68, 0x3c, 0x80, 0x83, 0xd8, 0x30, 0x36, 0x44, 0x83, 0x64, 0x7b, 0x0f, 0x53, 0x18, 0xb5, 0x45,
-	0x4d, 0x0b, 0x5e, 0xc1, 0x91, 0x3d, 0x3b, 0x65, 0x7b, 0x6a, 0xdd, 0xaa, 0x3a, 0xee, 0x9a, 0x04,
-	0xa1, 0x29, 0xda, 0x09, 0xe1, 0x31, 0x8c, 0xaf, 0x4b, 0x51, 0xe9, 0x5b, 0x69, 0xe7, 0x1d, 0x72,
-	0x98, 0x74, 0x52, 0x9b, 0xea, 0x3c, 0x05, 0x2f, 0x96, 0x59, 0xbd, 0xb9, 0xe2, 0x8e, 0x7f, 0x80,
-	0x03, 0xbb, 0xc3, 0xfc, 0x24, 0xda, 0x79, 0xb7, 0x51, 0xef, 0x49, 0x06, 0xcf, 0xf7, 0x58, 0x4d,
-	0xd6, 0xaf, 0xe0, 0xd9, 0x4a, 0x9a, 0x5f, 0xc1, 0xd8, 0x84, 0x59, 0xad, 0x97, 0xbc, 0xc7, 0xd9,
-	0x4b, 0x7e, 0x0f, 0xf2, 0x51, 0x8c, 0x62, 0x89, 0xea, 0x7d, 0x8e, 0x37, 0xb4, 0x96, 0x25, 0xbf,
-	0x80, 0xa1, 0x89, 0xad, 0xff, 0x9f, 0xfb, 0x4e, 0xfc, 0xce, 0x40, 0x83, 0x67, 0xf7, 0x58, 0x4c,
-	0xd6, 0x2f, 0x00, 0xcd, 0x36, 0x5e, 0xa0, 0x20, 0xcd, 0x3f, 0x81, 0x77, 0x6b, 0x77, 0x93, 0xbb,
-	0x3c, 0xfd, 0x67, 0x14, 0xbc, 0xd8, 0x67, 0x6e, 0x33, 0x2f, 0x9e, 0x34, 0xe6, 0xd7, 0x7f, 0x02,
-	0x00, 0x00, 0xff, 0xff, 0xbd, 0xf3, 0xa4, 0x8c, 0x15, 0x05, 0x00, 0x00,
+var fileDescriptor_raft_e8ee26b5cadb4aca = []byte{
+	// 436 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xc4, 0x93, 0x41, 0x6f, 0xd3, 0x30,
+	0x14, 0xc7, 0xe5, 0x05, 0xc1, 0xfa, 0xd2, 0x91, 0xce, 0xa7, 0x10, 0x0d, 0xa8, 0xa2, 0x09, 0xe5,
+	0x94, 0x49, 0xe3, 0xc2, 0x15, 0xa8, 0x04, 0x43, 0xd1, 0x0e, 0x69, 0xc5, 0xdd, 0xdd, 0x5e, 0xd3,
+	0x4a, 0x49, 0x1c, 0x6c, 0x17, 0xc1, 0xb7, 0x80, 0x3b, 0x5f, 0xa3, 0xdf, 0x0f, 0x25, 0xb1, 0x9b,
+	0xda, 0xa2, 0x07, 0x04, 0xd2, 0x4e, 0xb1, 0xff, 0xef, 0x9f, 0xf7, 0x7e, 0x7e, 0xcf, 0x06, 0x10,
+	0x6c, 0xa5, 0xd2, 0x46, 0x70, 0xc5, 0xa9, 0xdf, 0x7d, 0x96, 0xdb, 0xd5, 0x0a, 0x45, 0xf4, 0xb2,
+	0xe0, 0xbc, 0x28, 0xf1, 0xca, 0x68, 0x57, 0x6a, 0x53, 0xa1, 0x54, 0xac, 0x6a, 0x7a, 0x77, 0xbc,
+	0x23, 0x10, 0xbc, 0x6d, 0x9a, 0xf2, 0x7b, 0xc6, 0x8b, 0x1c, 0xbf, 0x6c, 0x51, 0x2a, 0x9a, 0x40,
+	0x70, 0xb7, 0x15, 0x02, 0x6b, 0xf5, 0x9e, 0x57, 0xd5, 0x46, 0xdd, 0xcc, 0x42, 0x32, 0x25, 0x89,
+	0x97, 0xbb, 0x32, 0xbd, 0x84, 0x33, 0x2d, 0x2d, 0x50, 0x54, 0x37, 0xb3, 0xf0, 0xa4, 0xf3, 0xd9,
+	0x22, 0x0d, 0xe1, 0x49, 0xc9, 0x8b, 0x19, 0x53, 0x2c, 0xf4, 0xa6, 0x24, 0x19, 0xe7, 0x66, 0x4b,
+	0xdf, 0xc0, 0x68, 0x0f, 0x14, 0x3e, 0x9a, 0x92, 0xc4, 0xbf, 0x8e, 0xd2, 0x1e, 0x39, 0x35, 0xc8,
+	0xe9, 0xc2, 0x38, 0xf2, 0xc1, 0x1c, 0xff, 0x22, 0x30, 0x19, 0xb8, 0x65, 0xc3, 0x6b, 0x89, 0xff,
+	0x1d, 0xdc, 0xc2, 0xf3, 0xfe, 0x06, 0xef, 0x07, 0x81, 0xc9, 0x47, 0x64, 0x42, 0x2d, 0x91, 0x29,
+	0xd3, 0xd7, 0x0b, 0x18, 0xa9, 0x36, 0x71, 0x7d, 0x8f, 0xdf, 0x34, 0xd8, 0x20, 0xb4, 0x48, 0x25,
+	0x93, 0x7d, 0xe9, 0xce, 0xa1, 0x91, 0x2c, 0xf1, 0x1f, 0x90, 0x7e, 0x12, 0x38, 0x3f, 0x40, 0xd2,
+	0x2d, 0x7b, 0x58, 0x26, 0x09, 0xfe, 0x67, 0xae, 0xd0, 0x34, 0xe8, 0x12, 0xce, 0xf4, 0xf2, 0x96,
+	0xdf, 0xe3, 0x7e, 0x7a, 0xb6, 0x48, 0x63, 0x18, 0x67, 0x4c, 0x0e, 0x23, 0xee, 0x99, 0x2c, 0x8d,
+	0x46, 0x70, 0x9a, 0x69, 0xc6, 0x8e, 0xc8, 0xcb, 0xf7, 0xfb, 0x78, 0x01, 0xe3, 0xbe, 0xa8, 0x6e,
+	0xc1, 0x2b, 0x78, 0x6a, 0xd6, 0x56, 0x59, 0x47, 0x6d, 0x5b, 0xd5, 0xfe, 0x37, 0x57, 0x4c, 0xa1,
+	0x2e, 0x3a, 0x08, 0xf1, 0x39, 0x04, 0xf3, 0x9a, 0x35, 0x72, 0xcd, 0xcd, 0xbc, 0x63, 0x0a, 0x93,
+	0x41, 0xea, 0x53, 0x5d, 0xef, 0x4e, 0x00, 0x32, 0x5e, 0xcc, 0x51, 0x7c, 0xdd, 0xdc, 0x21, 0xfd,
+	0x00, 0xa7, 0xe6, 0x16, 0xd3, 0x8b, 0xf4, 0xe0, 0xe5, 0xa6, 0xce, 0xa3, 0x8c, 0x9e, 0x1f, 0x89,
+	0xea, 0x43, 0xdc, 0x42, 0xa0, 0x9d, 0xa6, 0xa4, 0x93, 0xcf, 0x81, 0x73, 0xf2, 0xb9, 0x9c, 0xf4,
+	0x1d, 0xf8, 0xda, 0xd9, 0x1e, 0x91, 0x86, 0x96, 0xfb, 0x60, 0x66, 0xd1, 0xb3, 0x3f, 0x44, 0x74,
+	0x8e, 0x4f, 0x30, 0x5a, 0x9b, 0x0b, 0x47, 0xed, 0x7a, 0xee, 0xdb, 0x88, 0x5e, 0x1c, 0x0b, 0xf7,
+	0xb9, 0x96, 0x8f, 0xbb, 0xf0, 0xeb, 0xdf, 0x01, 0x00, 0x00, 0xff, 0xff, 0x51, 0x77, 0x3e, 0x70,
+	0xea, 0x04, 0x00, 0x00,
 }

@@ -25,7 +25,7 @@ var _ = math.Inf
 const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 
 type Timepoint struct {
-	Timestamp            *timestamp.Timestamp `protobuf:"bytes,1,opt,name=timestamp" json:"timestamp,omitempty"`
+	Timestamp            *timestamp.Timestamp `protobuf:"bytes,1,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
 	XXX_unrecognized     []byte               `json:"-"`
 	XXX_sizecache        int32                `json:"-"`
@@ -63,8 +63,8 @@ func (m *Timepoint) GetTimestamp() *timestamp.Timestamp {
 }
 
 type Endpoints struct {
-	Endpoint             []string             `protobuf:"bytes,1,rep,name=endpoint" json:"endpoint,omitempty"`
-	Timestamp            *timestamp.Timestamp `protobuf:"bytes,2,opt,name=timestamp" json:"timestamp,omitempty"`
+	Endpoint             []string             `protobuf:"bytes,1,rep,name=endpoint,proto3" json:"endpoint,omitempty"`
+	Timestamp            *timestamp.Timestamp `protobuf:"bytes,2,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
 	XXX_unrecognized     []byte               `json:"-"`
 	XXX_sizecache        int32                `json:"-"`
@@ -109,8 +109,8 @@ func (m *Endpoints) GetTimestamp() *timestamp.Timestamp {
 }
 
 type Master struct {
-	Master               string               `protobuf:"bytes,1,opt,name=master" json:"master,omitempty"`
-	Timestamp            *timestamp.Timestamp `protobuf:"bytes,2,opt,name=timestamp" json:"timestamp,omitempty"`
+	Master               string               `protobuf:"bytes,1,opt,name=master,proto3" json:"master,omitempty"`
+	Timestamp            *timestamp.Timestamp `protobuf:"bytes,2,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
 	XXX_unrecognized     []byte               `json:"-"`
 	XXX_sizecache        int32                `json:"-"`
@@ -155,10 +155,10 @@ func (m *Master) GetTimestamp() *timestamp.Timestamp {
 }
 
 type Member struct {
-	Member               string               `protobuf:"bytes,1,opt,name=member" json:"member,omitempty"`
-	Terms                int64                `protobuf:"varint,2,opt,name=terms" json:"terms,omitempty"`
-	Address              string               `protobuf:"bytes,3,opt,name=address" json:"address,omitempty"`
-	Timestamp            *timestamp.Timestamp `protobuf:"bytes,4,opt,name=timestamp" json:"timestamp,omitempty"`
+	Member               string               `protobuf:"bytes,1,opt,name=member,proto3" json:"member,omitempty"`
+	Terms                int64                `protobuf:"varint,2,opt,name=terms,proto3" json:"terms,omitempty"`
+	Address              string               `protobuf:"bytes,3,opt,name=address,proto3" json:"address,omitempty"`
+	Timestamp            *timestamp.Timestamp `protobuf:"bytes,4,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
 	XXX_unrecognized     []byte               `json:"-"`
 	XXX_sizecache        int32                `json:"-"`
@@ -217,9 +217,9 @@ func (m *Member) GetTimestamp() *timestamp.Timestamp {
 }
 
 type Terms struct {
-	Terms                int64                `protobuf:"varint,1,opt,name=terms" json:"terms,omitempty"`
-	CommitId             int64                `protobuf:"varint,2,opt,name=commitId" json:"commitId,omitempty"`
-	Timestamp            *timestamp.Timestamp `protobuf:"bytes,3,opt,name=timestamp" json:"timestamp,omitempty"`
+	Terms                int64                `protobuf:"varint,1,opt,name=terms,proto3" json:"terms,omitempty"`
+	CommitId             int64                `protobuf:"varint,2,opt,name=commitId,proto3" json:"commitId,omitempty"`
+	Timestamp            *timestamp.Timestamp `protobuf:"bytes,3,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
 	XXX_unrecognized     []byte               `json:"-"`
 	XXX_sizecache        int32                `json:"-"`
@@ -271,9 +271,9 @@ func (m *Terms) GetTimestamp() *timestamp.Timestamp {
 }
 
 type ClusterSnapshot struct {
-	Master               *Master  `protobuf:"bytes,1,opt,name=master" json:"master,omitempty"`
-	Member               *Member  `protobuf:"bytes,2,opt,name=member" json:"member,omitempty"`
-	Terms                *Terms   `protobuf:"bytes,3,opt,name=terms" json:"terms,omitempty"`
+	Master               *Master  `protobuf:"bytes,1,opt,name=master,proto3" json:"master,omitempty"`
+	Member               *Member  `protobuf:"bytes,2,opt,name=member,proto3" json:"member,omitempty"`
+	Terms                *Terms   `protobuf:"bytes,3,opt,name=terms,proto3" json:"terms,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -341,8 +341,9 @@ var _ grpc.ClientConn
 // is compatible with the grpc package it is being compiled against.
 const _ = grpc.SupportPackageIsVersion4
 
-// Client API for ExternApi service
-
+// ExternApiClient is the client API for ExternApi service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type ExternApiClient interface {
 	GetEndpoints(ctx context.Context, in *Timepoint, opts ...grpc.CallOption) (*Endpoints, error)
 	GetMaster(ctx context.Context, in *Timepoint, opts ...grpc.CallOption) (*Master, error)
@@ -360,7 +361,7 @@ func NewExternApiClient(cc *grpc.ClientConn) ExternApiClient {
 
 func (c *externApiClient) GetEndpoints(ctx context.Context, in *Timepoint, opts ...grpc.CallOption) (*Endpoints, error) {
 	out := new(Endpoints)
-	err := grpc.Invoke(ctx, "/protobuffer.ExternApi/GetEndpoints", in, out, c.cc, opts...)
+	err := c.cc.Invoke(ctx, "/protobuffer.ExternApi/GetEndpoints", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -369,7 +370,7 @@ func (c *externApiClient) GetEndpoints(ctx context.Context, in *Timepoint, opts 
 
 func (c *externApiClient) GetMaster(ctx context.Context, in *Timepoint, opts ...grpc.CallOption) (*Master, error) {
 	out := new(Master)
-	err := grpc.Invoke(ctx, "/protobuffer.ExternApi/GetMaster", in, out, c.cc, opts...)
+	err := c.cc.Invoke(ctx, "/protobuffer.ExternApi/GetMaster", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -378,7 +379,7 @@ func (c *externApiClient) GetMaster(ctx context.Context, in *Timepoint, opts ...
 
 func (c *externApiClient) GetCurrentTerms(ctx context.Context, in *Timepoint, opts ...grpc.CallOption) (*Terms, error) {
 	out := new(Terms)
-	err := grpc.Invoke(ctx, "/protobuffer.ExternApi/GetCurrentTerms", in, out, c.cc, opts...)
+	err := c.cc.Invoke(ctx, "/protobuffer.ExternApi/GetCurrentTerms", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -387,15 +388,14 @@ func (c *externApiClient) GetCurrentTerms(ctx context.Context, in *Timepoint, op
 
 func (c *externApiClient) GetClusterSnapshot(ctx context.Context, in *Timepoint, opts ...grpc.CallOption) (*ClusterSnapshot, error) {
 	out := new(ClusterSnapshot)
-	err := grpc.Invoke(ctx, "/protobuffer.ExternApi/GetClusterSnapshot", in, out, c.cc, opts...)
+	err := c.cc.Invoke(ctx, "/protobuffer.ExternApi/GetClusterSnapshot", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// Server API for ExternApi service
-
+// ExternApiServer is the server API for ExternApi service.
 type ExternApiServer interface {
 	GetEndpoints(context.Context, *Timepoint) (*Endpoints, error)
 	GetMaster(context.Context, *Timepoint) (*Master, error)

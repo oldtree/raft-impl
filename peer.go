@@ -2,15 +2,15 @@ package raft
 
 import (
 	"context"
+	_ "eco/raft/protobuffer"
 	"errors"
 	"sync"
 
-	_ "eco/raft/protobuffer"
-
 	_ "github.com/sirupsen/logrus"
+	"google.golang.org/grpc"
 )
 
-type Peer struct {
+type PeerInfo struct {
 	Addr           string    `json:"addr,omitempty"`
 	ID             int64     `json:"id,omitempty"`
 	Name           string    `json:"name,omitempty"`
@@ -20,8 +20,8 @@ type Peer struct {
 	LastActiveTime int64     `json:"last_active_time,omitempty"`
 }
 
-func NewPeer(address string, id uint64, name string, role RaftState, term int64, lastCommit int64, lastActiveTimeStamp int64) *Peer {
-	return &Peer{
+func NewPeerInfo(address string, id uint64, name string, role RaftState, term int64, lastCommit int64, lastActiveTimeStamp int64) *PeerInfo {
+	return &PeerInfo{
 		Addr:           address,
 		ID:             int64(id),
 		Name:           name,
@@ -32,30 +32,16 @@ func NewPeer(address string, id uint64, name string, role RaftState, term int64,
 	}
 }
 
-func (peer *Peer) SendVoteRequest(ctx context.Context) error {
-
-	return nil
+type Peer struct {
+	*PeerInfo
+	connection *grpc.ClientConn
 }
 
-func (peer *Peer) SendVoteResponse(ctx context.Context) error {
-
-	return nil
-}
-
-func (peer *Peer) SendHeartBeatRequest(ctx context.Context) error {
-	return nil
-}
-
-func (peer *Peer) SendHeartBeatResponse(ctx context.Context) error {
-	return nil
-}
-
-func (peer *Peer) SendApplyLogRequest(ctx context.Context) error {
-	return nil
-}
-
-func (peer *Peer) SendApplyLogResponse(ctx context.Context) error {
-	return nil
+func NewPeer(pi *PeerInfo) *Peer {
+	pe := &Peer{
+		PeerInfo: pi,
+	}
+	pe.connection = grpc.Dial(pi.Addr, ogrpc.DialOption)
 }
 
 type PeerList struct {
@@ -74,23 +60,11 @@ func (pl *PeerList) SendVoteRequest(ctx context.Context) error {
 	return nil
 }
 
-func (pl *PeerList) SendVoteResponse(ctx context.Context) error {
-	return nil
-}
-
 func (pl *PeerList) SendHeartBeatRequest(ctx context.Context) error {
 	return nil
 }
 
-func (pl *PeerList) SendHeartBeatResponse(ctx context.Context) error {
-	return nil
-}
-
 func (pl *PeerList) SendApplyLogRequest(ctx context.Context) error {
-	return nil
-}
-
-func (pl *PeerList) SendApplyLogResponse(ctx context.Context) error {
 	return nil
 }
 

@@ -9,7 +9,7 @@ import "google/protobuf/timestamp.proto";
 message ApplyLogRequest {
     int64 currentCommitID=1;
     int64 currentTermID=2;
-    bytes logData=3; 
+    bytes data=3; 
     google.protobuf.Timestamp timestamp = 4;
 }
 
@@ -37,6 +37,8 @@ message VoteRequest{
     int64 RequestNodeID=1;
     int64 LastCommitID=2;
     int64 LastTerm=3;
+    int64 id=4;
+    string name=5;
 }
 
 message VoteResponse{
@@ -52,18 +54,10 @@ message SnapshotResponse{
 
 }
 
-service LogApplay{
+
+service LogService{
     rpc ApplyLog(ApplyLogRequest) returns (ApplyLogResponse);
-}
-
-service Snapshots{
     rpc RequestSnapshot(SnapshotRequest) returns (SnapshotResponse);
-}
-
-service LeaderElection{
     rpc RequestVote(VoteRequest) returns (VoteResponse);
-}
-
-service HeartBeats{
     rpc heartbeat(HeartbeatRequest) returns (HeartbeatResponse);
 }
